@@ -1,0 +1,34 @@
+3
+perfect 1, perfect 0, unperfect 0 의 개수를 알아야함.
+
+perfect 1은 perfect 1과 unperfect 0을 생성
+perfect 0은 perfect 1과 unperfect 0을 생성
+즉 perfect 타일은 다음에 무조건 perfect타일과 unperfect 타일을 생성
+unperfect 0은 perfect 0을 생성
+
+perfect tile 은 perfect tile과 unperfect tile 생성
+unperfect tile은 perfect타일 생성
+
+N=1일때
+perfect : 1
+unperfect  : 1
+
+N=2일때
+perfect : 2
+unperfect : 1
+
+N=3일때
+perfect:3
+unperfect :2
+
+N=4일때
+perfect:5
+unperfect:3
+
+N=5일때
+perfect:8
+unperfect:5
+
+패턴 발견!
+피보나치 수열과 같음..
+0번째랑 1번째랑 1로 놓고 피보나치 수열 동적 프로그래밍하면 됨
