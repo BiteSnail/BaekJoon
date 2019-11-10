@@ -1,37 +1,38 @@
 #include <stdio.h>
 
 int wine[10001];
-int mount[2][10001];
+int mount[10001];
 
 int comp1(int a,int b){
 	return a > b ? a : b;
+}
+
+int solve(int n){
+	if(n<1) return 0;
+
+	if(mount[n]>0) return mount[n];
+
+	mount[n]=comp1(solve(n-1), wine[n]+solve(n-2));
+	mount[n]=comp1(mount[n],wine[n]+wine[n-1]+solve(n-3));
+
+	return mount[n];
+	
 }
 
 int main(void){
 	int n;
 	int re;
 	for(int i=0;i<10001;i++){
-		mount[0][i]=mount[1][i]=0;
+		mount[i]=0;
 	}
 	scanf("%d",&n);
 	for(int i=1;i<=n;i++){
 		scanf("%d",&wine[i]);
 	}
-	
-	mount[0][1]=wine[1];
-	for(int i=2;i<=n;i++){
-		mount[0][i]=comp1(mount[0][i-2],mount[1][i-2])+wine[i];
-		if(i>2)
-			mount[0][i]=comp1(mount[0][i], comp1(mount[0][i-3], mount[0][i-3])+wine[i]);
-		mount[1][i]=mount[0][i-1]+wine[i];
-	}
-	
-	for(int i=1;i<=n;i++){
-		printf("[%d %d]\n",mount[0][i], mount[1][i]);
-	}
+	mount[1]=wine[1];
 
-	re=comp1(mount[0][n], mount[1][n]);
-	re=comp1(re, comp1(mount[0][n-1],mount[1][n-1]));
+	re=solve(n);
+	
 	printf("%d\n",re);	
 
 }
