@@ -1,38 +1,46 @@
 #include <iostream>
-#include <queue>
+#include <stack>
 #define ii pair<int, int>
 using namespace std;
 
-int heights[80000];
-
-int sum;
+long long sum;
+//maximum data 80000
+//80000*79999/2 = 3199960000 is bigger than int type
+//^^;;
 
 int main(){
     int N;
-    int pivot, l, r;
-    queue<ii> task_q;
+    int h;
+    stack<ii> cow;
+    ii tp;
     cin >> N;
-    for(int n=0;n<N;n++){
-        cin >> heights[n];
-    }
-    task_q.push({0, N});
-    while(!task_q.empty()){
-        l = task_q.front().first;
-        r = task_q.front().second;
-        task_q.pop();
-        pivot = l+1;
-        if(l>=r){
-            return;
+    cin >> h;
+    cow.push({h, 1});
+    for(int n=1;n<N;n++){
+        cin >> h;
+        if(cow.top().first > h){
+            cow.push({h, 1});
         }
-        while(pivot < r){
-            if(heights[l]<=heights[pivot]){
-                break;
+        else{
+            while(!cow.empty()){
+                if(cow.top().first > h){
+                    break;
+                }
+                tp = cow.top();
+                cow.pop();
+                if(!cow.empty())
+                    cow.top().second += tp.second;
+                sum += tp.second-1;
             }
-            pivot++;
+            cow.push({h, 1});
         }
-        sum += (pivot - l - 1);
-        task_q.push({l+1, pivot});
-        task_q.push({pivot, r});
+    }
+    while(!cow.empty()){
+        tp = cow.top();
+        cow.pop();
+        if(!cow.empty())
+            cow.top().second += tp.second;
+        sum += tp.second-1;
     }
     cout<<sum;
 
