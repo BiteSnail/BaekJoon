@@ -1,50 +1,38 @@
 #include <iostream>
-#include <set>
-#include <stack>
-
+#include <cstring>
 using namespace std;
 
 int nums[150];
-bool is_checked[150];
-set<int> s;
+int cnt;
+bool sel[150], is_checked[150];
+
+bool is_ok(int s, int e){
+    if(s==e){
+        cnt++;
+        return true;
+    }
+    if(is_checked[e]) 
+        return false;
+    is_checked[e]=true;
+    return is_ok(s, nums[e]);
+}
 
 int main(){
     int n;
     cin >> n;
     for(int i=1;i<=n;i++){
         cin>>nums[i];
-        if(nums[i] == i){
-            is_checked[i] = true;
-            s.insert(i);
-        }
     }
-    
+
     for(int i=1;i<=n;i++){
-        if(is_checked[i]==false){
-            stack<int> st;
-            st.push(nums[i]);
-            while(st.top() != i){
-                if(is_checked[st.top()]){
-                    while(!st.empty()){
-                        is_checked[st.top()] = false;
-                        st.pop();
-                    }
-                    break;
-                }
-                is_checked[st.top()] = true;
-                st.push(nums[st.top()]);
-            }
-            while(!st.empty()){
-                s.insert(st.top());
-                st.pop();
-            }
-        }
+        memset(is_checked, false, sizeof(is_checked));
+        sel[i] = is_ok(i, nums[i]);
     }
 
-    cout<<s.size()<<'\n';
-    for(auto &e: s){
-        cout<<e<<'\n';
+    cout<<cnt<<'\n';
+    for(int i=1;i<=n;i++){
+        if(sel[i])
+            cout<<i<<'\n';
     }
-
     return 0;
 }
